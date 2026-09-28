@@ -5,10 +5,10 @@ WORKDIR /workspace
 
 COPY gradlew settings.gradle.kts build.gradle.kts ./
 COPY gradle gradle
-RUN --mount=type=cache,target=/root/.gradle ./gradlew dependencies --no-daemon > /dev/null
+RUN ./gradlew dependencies --no-daemon > /dev/null
 
 COPY src src
-RUN --mount=type=cache,target=/root/.gradle ./gradlew bootJar --no-daemon -x test \
+RUN ./gradlew bootJar --no-daemon -x test \
     && cp build/libs/*-SNAPSHOT.jar app.jar \
     && java -Djarmode=tools -jar app.jar extract --layers --launcher --destination extracted
 
